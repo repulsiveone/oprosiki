@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <div id="container" style="width: 75%;">
+        <canvas id="check-survey-info" data-url="{% url 'check_survey_info' %}"></canvas>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+  <script>
+
+    $(function () {
+
+      var $checkSurvey = $("#check-survey-info");
+      $.ajax({
+        url: $checkSurvey.data("url"),
+        success: function (data) {
+
+          var ctx = $checkSurvey[0].getContext("2d");
+
+          new Chart(ctx, {
+            type: 'pie',
+            data: {
+              labels: data.questions,
+              datasets: [{
+                label: 'Questions',
+                backgroundColor: ["#fd7f6f", "#7eb0d5", "#b2e061", "#bd7ebe", "#ffb55a", "#ffee65", "#beb9db", "#fdcce5", "#8bd3c7"],
+                data: data.count_answers
+              }]          
+            },
+            options: {
+              responsive: true,
+              legend: {
+                position: 'top',
+              },
+              title: {
+                display: true,
+                text: 'Статистика'
+              }
+            }
+          });
+
+        }
+      });
+
+    });
+
+  </script>
+</body>
+</html>

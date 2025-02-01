@@ -1,0 +1,74 @@
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #FFF0F5;
+}
+
+header {
+    display: flex;
+    width: auto;
+    height: 60px;
+    margin: 0;
+    padding: 0;
+    background-color: #483D8B;
+    justify-content: space-between;
+    position: sticky;
+    top:0;
+    z-index: 1;
+}
+
+#logo {
+    text-decoration: none;
+    font-family: 'Montserrat';
+    font-size: 30px;
+    font-weight: bold;
+    color: #FFF0F5;
+    margin-top: 10px;
+    margin-left: 40px;
+}
+
+.signup {
+    display: flex;
+    justify-content: center;
+    border: 1px solid #FFF0F5;
+    border-radius: 10px;
+    width: 80px;
+    height: 35px;
+    margin-top: 4px;
+}
+
+#signin {
+    color: #FFF0F5;
+    text-decoration: none;
+    font-family: 'Montserrat';
+    font-size: 20px;
+    margin-right: 20px;
+}
+
+#signup {
+    color: #FFF0F5;
+    text-decoration: none;
+    font-family: 'Montserrat';
+    font-size: 20px;
+    margin-top: 5px;
+}
+
+.auth-knopki {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-right: 40px;
+}
+
+#user-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: none;
+    border-color: #FFF0F5;
+    cursor: pointer;
+    background-image: url('/static/user-icon.png');
+    background-size: cover;
+    margin-top: 8px;
+    margin-right: 40px;
+}

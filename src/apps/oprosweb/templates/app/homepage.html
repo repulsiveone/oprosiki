@@ -1,0 +1,61 @@
+{% extends './base.html' %}
+
+{% block content %}
+<form method="post">{% csrf_token %}
+    <div class="preview">
+        <svg viewBox="0 0 500 230" class="svg-element">
+            <path d="M 0 230 C 450 180 500 55 2000 1200 L 500 0 L 0 0" fill="#9370DB"></path>
+        </svg>
+        <div class="content">
+            <div class="line-content">
+                <img src="/static/oprosik.png" id='opros'>
+            </div>
+            <div class="column-content">
+                <p class="text-block">Создайте свой уникальный опрос<br>
+                    или примите участие в уже готовых,<br>
+                    чтобы поделиться своими мыслями и мнениями вместе с сообществом!</p>
+                <div class="knopki">
+                    <input type="submit" class="create-survey" value="Создать опрос" name="create-survey">
+                    <input type="submit" class="list-survey" value="Открыть все" name="list-survey">
+                </div>
+            </div>
+        </div>
+    </div>
+
+<main>
+    <div class="scroll-down">
+        <span class="material-icons"><img src='/static/arrow.png'></span>
+    </div>
+<div class="surveycontent">
+    <p class="topSurveys">Выбор сообщества</p>
+    <div class="contentSurv">
+        <div class="surveys">
+            {% for i in surveys %}
+            <div class="oprosikBlock">
+                <div class="oprosikText">
+                    <p style="font-size: 25px">{{ i.theme }}</p>
+                    <p style="font-size: 15px">{{ i.theme_description }}</p>
+                </div>
+                <a href="/survey/{{ i.id }}">Перейти</a>
+            </div>
+            {% endfor %}
+        </div>
+        <img src="/static/vopros.png" id='vopros'>
+    </div>
+</div>
+</main>
+<footer>
+</footer>
+</form>
+{% endblock %}
+{% block stylesheets %}
+<link rel="stylesheet" href="/static/css/homepage.css">
+{% endblock %}
+{% block scripts %}
+<script>
+    window.addEventListener("scroll", function() {
+    var scrollDown = document.querySelector(".scroll-down");
+        scrollDown.style.display = window.pageYOffset > 0 ? "none" : "block";
+    });
+</script>
+{% endblock %}

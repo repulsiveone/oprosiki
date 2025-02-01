@@ -1,0 +1,53 @@
+body {
+    /* background-image: url('/static/sign_up_background.jpg'); */
+    /* background-size: cover; */
+}
+
+main {
+    display: flex;
+    justify-content: center;
+    
+}
+
+.container {
+    width: 700px;
+    height: 450px;
+    background-color: #483D8B;
+    margin-top: 200px;
+}
+
+.container input {
+    border: none;
+    border-bottom: 2px solid  #FFF0F5;
+    background-color: #483D8B;
+    outline: none;
+    width: 500px;
+    height: 30px;
+    margin-left: 100px;
+    margin-top: 30px;
+    font-size: 20px;
+}
+
+
+.fieldWrapper .error {
+    color: #000000;
+    font-size: 14px;
+}
+
+.fieldWrapper span {
+    display: flex;
+    margin-left: 75px;
+}
+
+.container button {
+    float: right;
+    margin-right: 40px;
+    width: 100px;
+    height: 30px;
+    background-color: #FFF0F5;
+    cursor: pointer;
+    border: none;
+    font-family: 'Montserrat';
+    font-size: 17px;
+    margin-top: 20px;
+}

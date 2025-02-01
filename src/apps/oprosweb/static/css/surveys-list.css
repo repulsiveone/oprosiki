@@ -1,0 +1,55 @@
+main {
+    display: flex;
+    justify-content: center;
+}
+
+.container {
+    width: 1400px;
+    height: auto;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.wrapper {
+    display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.search-field {
+    margin-top: 20px;
+}
+
+#search-input {
+    width: 450px;
+    height: 30px;
+}
+
+.oprosikBlock {
+    width: 400px;
+    height: 200px;
+    flex: 0 0 30%;
+    margin: 0 1%;
+    margin-top: 40px;
+    background-color: #FFFFFF;
+    box-shadow: -5px 10px 10px 3px #483D8B;
+    border: 1px solid #483D8B;
+}
+
+.oprosikBlock p {
+    font-weight: bold;
+    font-family: 'Montserrat';
+    color: #483D8B;
+    margin-left: 10px;
+}
+
+.oprosikText {
+    height: 150px;
+}
+
+.oprosikBlock a {
+    float: right;
+    margin-right: 40px;
+}

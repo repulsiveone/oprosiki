@@ -1,0 +1,112 @@
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #FFF0F5;
+}
+
+header {
+    width: auto;
+    height: 50px;
+    margin: 0;
+    padding: 0;
+    background-color: #483D8B;
+}
+
+main {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+}
+
+.ramka {
+    position: relative;
+    display: flex;
+    justify-content: center;
+}
+
+.container {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    width: 700px;
+    height: 800px;
+    background-color: #FFFFFF;
+    margin-top: 30px;
+    border: 2px solid #483D8B;
+    z-index: 1;
+}
+
+.border-container {
+    position: absolute;
+    width: 700px;
+    height: 800px;
+    background-color: #FFFFFF;
+    margin-top: 50px;
+    margin-right: 45px;
+    border: 2px solid #483D8B;
+}
+
+#theme {
+    width: 600px;
+}
+
+input {
+    margin-left: 40px;
+    margin-top: 20px;
+}
+
+#theme-description {
+    width: 600px;
+}
+
+#answer {
+    display: flex;
+    flex-direction: column;
+    width: 650px;
+}
+
+#line {
+    margin-top: 50px;
+}
+
+.input-field {
+    border: none;
+    border-bottom: 1px solid  #483D8B;
+    outline: none;
+}
+
+.add-button {
+    display: inline-block;
+    width: 60px;
+    height: 170px;
+    background-color: #483D8B;
+    margin-top: 50px;
+    border-radius: 35px;
+}
+
+.ramka-button {
+    width: 740px;
+    display: inline-block;
+}
+
+.add-button button {
+    width: 40px;
+    height: 40px;
+    margin-top: 30px;
+    margin-left: 10px;
+    border-radius: 50%;
+    border: none;
+    border-color: #FFF0F5;
+    cursor: pointer;
+}
+
+#add-butt {
+    background-image: url('/static/add.png');
+    background-size: cover;
+}
+
+#send-butt {
+    background-image: url('/static/ready.png');
+    background-size: cover;
+}

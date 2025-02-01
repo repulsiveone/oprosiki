@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <link rel="stylesheet" href="/static/css/base.css">
+</head>
+<body>
+    <header>
+        <a href="/homepage" id="logo">Oprosiki</a>
+        {% if user.is_authenticated %}
+            <button type="button" id="user-icon"></button>
+        {% else %}
+        <div class="auth-knopki">
+            <a href="/signin" id="signin">Sign in</a>
+            <div class="signup">
+                <a href="/signup" id="signup">Sign up</a>
+            </div>
+        </div>
+        {% endif %}
+    </header>
+    {% block content %}
+    <main>
+    </main>
+    {% endblock %}
+    {% block stylesheets %}{% endblock %}
+    {% block scripts %}
+    <script>
+    </script>
+    {% endblock %}
+</body>
+</html>

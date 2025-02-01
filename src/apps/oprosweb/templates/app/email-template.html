@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Welcome Email</title>
+  </head>
+  <body style="display: flex; justify-content: center;">
+    <div style="width: 900px; height: 400px; background-color: #483D8B;">
+        <h1 style="margin-left: 50px; font-family: 'Montserrat';font-size: 30px;color: #FFF0F5;">Добро пожаловать на нашу платформу, {{ username }}!</h1>
+        <p style="margin-left: 50px; font-family: 'Montserrat';font-size: 20px;color: #FFF0F5;">Благодарим вас за регистрацию на нашем сайте.</p>
+        <p style="margin-left: 50px; font-family: 'Montserrat';font-size: 20px;color: #FFF0F5;">Вот ваш код для подтверждения адреса электронной почты!!!</p>
+        <div style="background-color: #FFF0F5; width: 160px; height: 40px; margin-left: 370px;">
+            <p style="font-size: 25px; font-weight: bold; margin-left: 35px;">{{confirmation_code}}</p>
+        </div>
+        <p style="margin-left: 50px; font-family: 'Montserrat';font-size: 20px;color: #FFF0F5;">Если вы не регистрировались на нашем сайте, пожалуйста, проигнорируйте это письмо.</p>
+        <p style="margin-left: 50px; font-family: 'Montserrat';font-size: 20px;color: #FFF0F5;">Спасибо за использование нашего сервиса!</p>
+    </div>
+  </body>
+</html>

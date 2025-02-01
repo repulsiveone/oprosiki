@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <link rel="stylesheet" href="/static/css/survey.css">
+</head>
+<body>
+    <header>
+    </header>
+    <main>
+        <div class="ramka">
+            <div class="container-survey" onclick="toggleElements1()">
+                <div class="theme"><p>{{survey.theme}}</p></div>
+                <div class="theme-description"><p>{{survey.theme_description}}</p></div>
+                <hr size="1" width="650px" align="center" color="#483D8B" id="line">
+                <div class="check-list">
+                    <div class="checbox-field">
+                        {% for i in questions%}
+                        <div class="checkField">
+                            <input type="checkbox" name="question:{{question.id}}" id="question">
+                            <p>{{i.question}}</p>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <div class="send-butt"><input type="submit" value="Отправить"></div>
+                </div>
+
+            </div>
+            <div class="container-diagramma" onclick="toggleElements2()">
+                <div id="container" style="width: 75%;">
+                    <canvas id="check-survey-info" data-url="/get_survey_info/{{survey.id}}"></canvas>
+                </div>
+            </div>
+        </div>
+    </main>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+  <script>
+    $(document).ready(function() {
+    var $checkSurvey = $("#check-survey-info");
+    $.ajax({
+        url: $checkSurvey.data("url"),
+        method: 'GET',
+        success: function(data) {
+            var ctx = $checkSurvey[0].getContext("2d");
+
+            new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: data.questionsList,
+                    datasets: [{
+                        label: 'Questions',
+                        backgroundColor: ["#fd7f6f", "#7eb0d5", "#b2e061", "#bd7ebe", "#ffb55a", "#ffee65", "#beb9db", "#fdcce5", "#8bd3c7"],
+                        data: data.count_answers
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    legend: {
+                        position: 'top',
+                    },
+                    title: {
+                        display: true,
+                        text: 'Статистика'
+                    }
+                }
+            });
+        }
+    });
+});
+  </script>
+</body>
+<script>
+    let activeElement = 'container-survey';
+    function toggleElements1() {
+        const one = document.querySelector('.container-survey');
+        const two = document.querySelector('.container-diagramma');
+            two.classList.remove('active');
+            one.classList.add('active');
+            activeElement = 'container-survey';
+    }
+    function toggleElements2() {
+        const one = document.querySelector('.container-survey');
+        const two = document.querySelector('.container-diagramma');
+            one.classList.remove('active');
+            two.classList.add('active');
+            activeElement = 'container-diagramma';
+    }
+
+    document.querySelector('.container-survey').classList.add('active');
+
+  </script>
+</html>

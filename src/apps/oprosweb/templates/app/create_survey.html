@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <link rel="stylesheet" href="/static/css/create_survey.css">
+</head>
+<body>
+<form method="post">{% csrf_token %}
+    <header>
+    </header>
+    <main>
+        <div class="ramka-button">
+            <div class="ramka">
+                <div class="container">
+                    {% if messages %}
+                    {% for message in messages %}
+                    <input type="text" name="theme" id="theme" class="input-field" placeholder="Тема {{message}}">
+                    <input type="text" name="theme-description" id="theme-description" class="input-field" placeholder="Описание {{ message }}">
+                    {% endfor %}
+                    {% else %}
+                    <input type="text" name="theme" id="theme" class="input-field" placeholder="Тема">
+                    <input type="text" name="theme-description" id="theme-description" class="input-field" placeholder="Описание">
+                    {% endif %}
+                    <hr size="1" width="650px" align="center" color="#483D8B" id="line">
+                        <div id="answer">
+                            <input type="text" name="option1" id="option1" class="input-field option" placeholder="Вариант ответа">
+                            <input type="text" name="option2" id="option2" class="input-field option" placeholder="Вариант ответа">
+                            <input type="text" name="option3" id="option3" class="input-field option" placeholder="Вариант ответа">
+                        </div>
+                </div>
+                <div class="border-container">
+
+                </div>
+            </div>
+        </div>
+        <div class="add-button">
+            <button type="button" id="add-butt"></button>
+            <button type="submit" id="send-butt" name="send-butt"></button>
+        </div>
+    </main>
+    <script>
+        let counter = 4;
+        const addBtn = document.getElementById('add-butt');
+        const container = document.getElementById('answer');
+
+        addBtn.addEventListener('click', () => {
+        if (counter <= 17) {
+            const newOpt = document.createElement('input');
+            newOpt.className = 'input-field option';
+            newOpt.placeholder = "Вариант ответа";
+            newOpt.type = "text";
+            newOpt.name = `option${counter}`;
+
+            container.appendChild(newOpt);
+            counter = counter + 1;
+        }
+        });
+    </script>
+</form>
+</body>
+</html>

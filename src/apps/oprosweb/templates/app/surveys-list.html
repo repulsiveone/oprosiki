@@ -1,0 +1,32 @@
+{% extends './base.html' %}
+
+{% block content %}
+<main>
+<div class="wrapper">
+    <form action="" method="get">
+        <div class="search-field">
+            <input type="text" name="search-input" id="search-input">
+        </div>
+    </form>
+    <div class="container">
+        {% for i in surveys %}
+        <div class="oprosikBlock">
+            <div class="oprosikText">
+                <p style="font-size: 25px">{{ i.theme }}</p>
+                <p style="font-size: 15px">{{ i.theme_description }}</p>
+            </div>
+            <a href="/survey/{{ i.id }}">Перейти</a>
+        </div>
+        {% endfor %}
+    </div>
+    </div>
+</main>
+
+
+{% endblock %}
+
+{% block stylesheets %}
+<link rel="stylesheet" href="/static/css/surveys-list.css">
+{% endblock %}
+{% block scripts %}
+{% endblock %}

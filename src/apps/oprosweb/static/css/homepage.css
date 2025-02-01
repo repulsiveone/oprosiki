@@ -1,0 +1,143 @@
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #FFF0F5;
+}
+
+
+footer {
+    width: auto;
+    height: 170px;
+    margin: 0;
+    padding: 0;
+    background-color: #302f2f;
+}
+
+main {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+}
+
+.preview {
+    height: 900px;
+}
+
+.svg-element {
+    left: 0px;
+    top: 50px;
+}
+
+.content {
+    position: absolute;
+    top: 150px;
+    left: 40px;
+    width: 1770px;
+    display: flex;
+    align-items: center;
+}
+
+.column-content {
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+    margin: 0 auto;
+    margin-bottom: 120px;
+  }
+
+.column-content p {
+    font-family: 'Montserrat';
+    font-size: 50px;
+    font-weight: bold;
+    color: #FFF0F5;
+}
+
+input {
+    width: 240px;
+    height: 70px;
+    border-radius: 35px;
+    border: none;
+    background: #483D8B;
+    cursor: pointer;
+    margin: 10px 0;
+    margin-left: 10%;
+    font-family: 'Montserrat';
+    font-size: 30px;
+    color: #FFF0F5;
+  }
+
+input + input {
+    margin-left: 40px;
+}
+
+
+.contentSurv {
+    display: flex;
+    align-items: center;
+}
+
+.surveycontent{
+    display: flex;
+    flex-direction: column;
+}
+
+.surveys {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin-bottom: 8%;
+  }
+
+.oprosikBlock {
+    flex: 1 0 45%;
+    margin-bottom: 20px;
+    margin-left: 20px;
+    width: 250px;
+    height: 250px;
+    background-color: #FFFFFF;
+    box-shadow: -5px 10px 10px 3px #483D8B;
+    border: 1px solid #483D8B;
+}
+
+.oprosikBlock p {
+    font-weight: bold;
+    font-family: 'Montserrat';
+    color: #483D8B;
+    margin-left: 10px;
+}
+
+.oprosikText {
+    height: 200px;
+}
+
+.oprosikBlock a {
+    float: right;
+    margin-right: 40px;
+}
+
+.topSurveys {
+    font-weight: bold;
+    text-align: center;
+    margin-right: 550px;
+    font-family: 'Montserrat';
+    font-size: 40px;
+    color: #483D8B;
+  }
+
+/* стрелка */
+.scroll-down {
+    position: absolute;
+    bottom: 20px;
+    opacity: 0.6;
+    transition: opacity 0.3s ease;
+  }
+
+.scroll-down img {
+    width: 80px;
+    height: 80px;
+}
+
+.scroll-down:hover {
+    opacity: 1;
+  }

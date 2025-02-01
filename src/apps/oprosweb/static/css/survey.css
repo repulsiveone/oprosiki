@@ -1,0 +1,110 @@
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #FFF0F5;
+}
+
+header {
+    width: auto;
+    height: 50px;
+    margin: 0;
+    padding: 0;
+    background-color: #483D8B;
+}
+
+main {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+}
+
+.ramka {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    margin-top: 100px;
+    font-family: 'Montserrat';
+    color: #483D8B;
+}
+
+.container-survey {
+    width: 800px;
+    height: 600px;
+    position: absolute;
+    background-color: #FFFFFF;
+    z-index: 1;
+    border: 1px solid #483D8B;
+}
+
+.container-diagramma {
+    width: 800px;
+    height: 600px;
+    position: absolute;
+    background-color: #FFFFFF;
+    margin-left: 85px;
+    margin-top: 50px;
+    border: 1px solid #483D8B;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.active {
+    opacity: 1;
+    z-index: 2;
+    transform: translateZ(0);
+}
+
+.theme {
+    margin-left: 40px;
+    font-size: 30px;
+    font-weight: bold;
+}
+
+.theme-description {
+    margin-left: 40px;
+    font-size: 25px;
+}
+
+.check-list {
+    margin-left: 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .checkField {
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .checkField input[type="checkbox"] {
+    transform: scale(1.5);
+  }
+
+  .checkField p {
+    margin: 0;
+  }
+
+.send-butt input {
+    width: 180px;
+    height: 40px;
+    border-radius: 35px;
+    border: none;
+    background: #483D8B;
+    cursor: pointer;
+    margin: 10px 0;
+    margin-left: 10%;
+    font-family: 'Montserrat';
+    font-size: 20px;
+    color: #FFF0F5;
+    float: right;
+    margin-right: 40px;
+}
+
+.checbox-field {
+    height: 300px;
+}

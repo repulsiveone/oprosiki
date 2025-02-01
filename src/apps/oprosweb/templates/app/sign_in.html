@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <title></title>
+  <link rel="stylesheet" href="/static/css/sign_in.css" />
+</head>
+<body>
+    <header>
+    </header>
+    <main>
+        <form method="post">{% csrf_token %}
+            
+            <div class="container">
+                {% for field in form %}
+                <div class="fieldWrapper">
+                    {{ field }}
+                    {% if field.errors %}
+                        <span class="error">{{ field.errors }}<span>
+                    {% endif %}
+                </div>
+                {% endfor %}
+                
+                <button type="submit">Sign in</button>
+            </div>
+            <div id="remember">
+                <input type="checkbox" name="remember-me"> Remember me
+            </div>
+        </form>
+    </main>
+</body>
+</html>
