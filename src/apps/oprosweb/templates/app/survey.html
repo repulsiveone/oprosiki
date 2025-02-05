@@ -1,42 +1,43 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <link rel="stylesheet" href="/static/css/survey.css">
-</head>
-<body>
-    <header>
-    </header>
-    <main>
-        <div class="ramka">
-            <div class="container-survey" onclick="toggleElements1()">
-                <div class="theme"><p>{{survey.theme}}</p></div>
-                <div class="theme-description"><p>{{survey.theme_description}}</p></div>
-                <hr size="1" width="650px" align="center" color="#483D8B" id="line">
-                <div class="check-list">
-                    <div class="checbox-field">
-                        {% for i in questions%}
-                        <div class="checkField">
-                            <input type="checkbox" name="question:{{question.id}}" id="question">
-                            <p>{{i.question}}</p>
-                        </div>
-                        {% endfor %}
-                    </div>
-                    <div class="send-butt"><input type="submit" value="Отправить"></div>
-                </div>
+{% extends './base.html' %}
 
-            </div>
-            <div class="container-diagramma" onclick="toggleElements2()">
-                <div id="container" style="width: 75%;">
-                    <canvas id="check-survey-info" data-url="/get_survey_info/{{survey.id}}"></canvas>
+{% block content %}
+<form method="POST">{% csrf_token %}
+<main>
+    <div class="ramka">
+        <div class="container-survey" onclick="toggleElements1()">
+            <div class="theme"><p>{{survey.theme}}</p></div>
+            <div class="theme-description"><p>{{survey.theme_description}}</p></div>
+            <hr size="1" width="650px" align="center" color="#483D8B" id="line">
+            <div class="check-list">
+                <div class="checbox-field">
+                    {% for i in questions%}
+                    <div class="checkField">
+                        <input type="checkbox" name="question:{{question.id}}" id="question">
+                        <p>{{i.question}}</p>
+                    </div>
+                    {% endfor %}
                 </div>
+                <div class="send-butt"><input type="submit" value="Отправить"></div>
+            </div>
+
+        </div>
+        <div class="container-diagramma" onclick="toggleElements2()">
+            <div id="container" style="width: 75%;">
+                <canvas id="check-survey-info" data-url="/get_survey_info/{{survey.id}}"></canvas>
             </div>
         </div>
-    </main>
+    </div>
+</main>
+</form>
+{% endblock %}
 
-
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-  <script>
+{% block stylesheets %}
+<link rel="stylesheet" href="/static/css/survey.css">
+{% endblock %}
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script>
     $(document).ready(function() {
     var $checkSurvey = $("#check-survey-info");
     $.ajax({
@@ -69,8 +70,7 @@
         }
     });
 });
-  </script>
-</body>
+</script>
 <script>
     let activeElement = 'container-survey';
     function toggleElements1() {
@@ -91,4 +91,4 @@
     document.querySelector('.container-survey').classList.add('active');
 
   </script>
-</html>
+{% endblock %}

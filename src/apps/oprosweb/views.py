@@ -147,12 +147,15 @@ def survey(request, id):
     questions = survey.surveyQA.all()
 
     if request.method == "POST":
-        form_data = request.POST.dict()
-        for dataVal in list(form_data):
-            if 'question' in dataVal:
-                question_id = dataVal.split(':')[1]
-                SurveyQA.objects.filter(id=question_id).update(answer_counter=F('answer_counter')+1)
-                survey.update(votes=F('votes')+1)
+        if request.user.is_authenticated:
+            form_data = request.POST.dict()
+            for dataVal in list(form_data):
+                if 'question' in dataVal:
+                    question_id = dataVal.split(':')[1]
+                    SurveyQA.objects.filter(id=question_id).update(answer_counter=F('answer_counter')+1)
+                    Survey.objects.filter(id=id).update(votes=F('votes')+1)
+        else:
+            return redirect('/signin')
 
     return render(request, 'app/survey.html', {'survey': survey, 'questions': questions})
 
