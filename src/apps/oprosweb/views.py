@@ -5,6 +5,7 @@ from itertools import islice
 from smtplib import SMTPRecipientsRefused
 from django.conf import settings
 from django.contrib.auth import login, logout
+from django.contrib.auth.hashers import check_password
 from django.shortcuts import render, redirect
 from .models import CustomUser, Survey, SurveyQA
 from django.db.models import F
@@ -79,15 +80,14 @@ def confirm_email_page(request):
 
     return render(request, 'app/password-veirfy-page.html')
 
-
-#TODO не отображаются ошибки с формы
+#TODO не работают ошибки валидации
 def signin(request):
     if request.user.is_authenticated:
         return redirect('/homepage')
     else:
         if request.method == "POST":
             form = SignInForm(request, request.POST)
-            if form.is_valid() and form.clean():
+            if form.is_valid():
                 email = form.cleaned_data['username']
                 user = CustomUser.objects.get(email=email)
                 remember_me = request.POST.get('remember-me')
@@ -152,7 +152,9 @@ def survey(request, id):
             for dataVal in list(form_data):
                 if 'question' in dataVal:
                     question_id = dataVal.split(':')[1]
+                    #обновление сколько раз выбран данный ответ
                     SurveyQA.objects.filter(id=question_id).update(answer_counter=F('answer_counter')+1)
+                    # обновление сколько людей проголосовало в опросе
                     Survey.objects.filter(id=id).update(votes=F('votes')+1)
         else:
             return redirect('/signin')
@@ -174,25 +176,28 @@ def check_survey_info(request, id):
 
 
 def create_survey(request):
-    if request.method == "POST":
-        user = CustomUser.objects.get(id=1)
-        form_data = request.POST.dict()
+    if request.user.is_authenticated:
+        if request.method == "POST":
+            user = CustomUser.objects.get(id=1)
+            form_data = request.POST.dict()
 
-        if not form_data.get('theme') or not form_data.get('theme-description'):
-            messages.info(request, "*Данное поле не может быть пустым")
-        else:
-            survey = Survey.objects.create(
-                theme=form_data.get('theme'),
-                theme_description=form_data.get('theme-description'),
-                user=user
-            )
+            if not form_data.get('theme') or not form_data.get('theme-description'):
+                messages.info(request, "*Данное поле не может быть пустым")
+            else:
+                survey = Survey.objects.create(
+                    theme=form_data.get('theme'),
+                    theme_description=form_data.get('theme-description'),
+                    user=user
+                )
 
-            for value in islice(form_data.values(), 3, None):
-                if value != '':
-                    question = SurveyQA.objects.create(
-                        question=value,
-                        survey=survey
-                    )
-            return redirect('/homepage')
+                for value in islice(form_data.values(), 3, None):
+                    if value != '':
+                        question = SurveyQA.objects.create(
+                            question=value,
+                            survey=survey
+                        )
+                return redirect('/homepage')
 
-    return render(request, 'app/create_survey.html')
+        return render(request, 'app/create_survey.html')
+    else:
+        return redirect('/signin')

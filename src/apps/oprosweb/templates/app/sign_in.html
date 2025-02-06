@@ -10,13 +10,12 @@
     </header>
     <main>
         <form method="post">{% csrf_token %}
-            
             <div class="container">
                 {% for field in form %}
                 <div class="fieldWrapper">
                     {{ field }}
                     {% if field.errors %}
-                        <span class="error">{{ field.errors }}<span>
+                        <span id="test" class="error">{{ field.errors }}<span>
                     {% endif %}
                 </div>
                 {% endfor %}
@@ -26,6 +25,8 @@
             <div id="remember">
                 <input type="checkbox" name="remember-me"> Remember me
             </div>
+            <div><a href="/signup">Ещё нет аккаунта?</a></div>
+
         </form>
     </main>
 </body>
