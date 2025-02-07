@@ -11,7 +11,7 @@ from .models import CustomUser, Survey, SurveyQA
 from django.db.models import F
 from django.contrib import messages
 from django.http import JsonResponse
-from .forms import SignUpForm, SignInForm
+from .forms import SignUpForm, CustomSignInForm
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
 
@@ -86,9 +86,9 @@ def signin(request):
         return redirect('/homepage')
     else:
         if request.method == "POST":
-            form = SignInForm(request, request.POST)
+            form = CustomSignInForm(request.POST)
             if form.is_valid():
-                email = form.cleaned_data['username']
+                email = form.cleaned_data['email']
                 user = CustomUser.objects.get(email=email)
                 remember_me = request.POST.get('remember-me')
 
@@ -100,7 +100,7 @@ def signin(request):
                     return redirect('/homepage')
                 
         else:
-            form = SignInForm()
+            form = CustomSignInForm(request.POST)
 
     return render(request, 'app/sign_in.html', {'form': form})
 

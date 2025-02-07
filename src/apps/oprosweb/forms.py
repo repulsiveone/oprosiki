@@ -29,21 +29,32 @@ class SignUpForm(UserCreationForm):
     class Meta:
         model = CustomUser
         fields = ('username', 'email', 'password1', 'password2')
+    
 
-
-class SignInForm(AuthenticationForm):
-    username = forms.EmailField(
+class CustomSignInForm(forms.Form):
+    email = forms.EmailField(
         widget=forms.TextInput(attrs={'placeholder': 'Enter the email'})
     )
 
     password = forms.CharField(
-        widget=forms.PasswordInput(attrs={'placeholder': 'password'}))
-    
+        widget=forms.PasswordInput(attrs={'placeholder': 'password'})
+    )
+
     def clean(self):
         cleaned_data = super().clean()
-        email = cleaned_data.get('username')
+        email = cleaned_data.get('email')
+        password = cleaned_data.get('password')
+        
+        try:
+            user = CustomUser.objects.get(email=email)
+        except CustomUser.DoesNotExist:
+            self.add_error('email', 'Неправильный адрес электронной почты')
+            return
 
-
-        cleaned_data['email'] = user
-
+        if not user.check_password(password):
+            self.add_error('password', 'Неправильный пароль')
+            return
+        
         return cleaned_data
+
+    

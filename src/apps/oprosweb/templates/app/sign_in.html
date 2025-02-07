@@ -14,8 +14,8 @@
                 {% for field in form %}
                 <div class="fieldWrapper">
                     {{ field }}
-                    {% for error in form.non_field_errors %}
-                    <span id="test" class="error">{{ error }}<span>
+                    {% for error in field.errors %}
+                        <span id="test" class="error">{{ error }}<span>
                     {% endfor %}
                 </div>
                 {% endfor %}
