@@ -190,10 +190,36 @@ def homepage(request):
     return render(request, 'app/homepage.html', {'surveys': surveys})
 
 
+def userpage(request):
+    user_id = request.user.id
+    user_info = CustomUser.objects.get(id=user_id)
+    user_surveys = Survey.objects.filter(user=user_info)
+    
+    if request.method == "POST":
+        if request.POST.get('change-password-button'):
+            return redirect(f'/userpage/change_password/{user_id}')
+    return render(request, 'app/userpage.html', {'user_info': user_info, 'user_surveys': user_surveys})
+
+
+def change_password(request, user_id):
+    current_user_id = request.user.id
+    user = CustomUser.objects.get(id=user_id)
+    if user.id == current_user_id:
+        if request.method == "POST":
+            old_password = request.GET.get('old-password-input')
+            new_password = request.GET.get('new-password-input')
+            if user.check_password(old_password):
+                user.set_password(new_password)
+                return redirect('/userpage')
+            return redirect(f'/userpage/change_password{current_user_id}')
+        return render(request, 'change_password.html')
+    return redirect('/userpage')
+
+
 def surveys(request):
     search = request.GET.get('search-input')
     print(search)
-    if search:
+    if search: 
         surveys = Survey.objects.filter(theme__icontains=search)
     else:
         surveys = Survey.objects.all()
