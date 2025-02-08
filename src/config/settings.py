@@ -28,6 +28,21 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+SESSION_ENGINE = "django.contrib.sessions.backends.cache"
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://127.0.0.1:6379/1",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        }
+    }
+}
+SESSION_CACHE_ALIAS = "default"
+SESSION_COOKIE_AGE = 1209600 
+SESSION_COOKIE_SECURE = True
+SESSION_COOKIE_HTTPONLY = True 
+SESSION_SAVE_EVERY_REQUEST = False
 
 # Application definition
 
@@ -40,6 +55,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.postgres',
     'apps.oprosweb.apps.AppsConfig',
+    'redis',
+    'django_redis',
 ]
 
 MIDDLEWARE = [

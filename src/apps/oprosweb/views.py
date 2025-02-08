@@ -1,5 +1,5 @@
 from itertools import islice
-
+import pickle
 from smtplib import SMTPRecipientsRefused
 from django.conf import settings
 from django.contrib.auth import login, logout
@@ -14,6 +14,8 @@ from django.core.mail import send_mail
 from django.template.loader import render_to_string
 from django.core.signing import Signer, BadSignature
 from .utils import generate_confirmation_code, generate_secure_link
+from django.contrib.sessions.backends.base import SessionBase
+from redis import Redis
 
 
 def signup(request):
@@ -97,6 +99,7 @@ def signin(request):
                     request.session.modified = True
                 if user is not None:
                     login(request, user)
+                    
                     try:
                         send_mail(
                             'Вход в аккаунт', 
@@ -126,14 +129,52 @@ def logout_view(request):
 
 def secure_logout(request, signed_user_id):
     signer = Signer()
-    # реализовать глобальное закрытие сессии для user
-    # try:
-    #     user_id = signer.unsign(signed_user_id)
-    #     user = CustomUser.objects.get(id=user_id)
-    #     logout(request)
-    #     return redirect('/signin')
-    # except BadSignature:
-    #     return render(request, 'error.html', {'error': 'Неверная ссылка'})
+    try:
+        user_id = signer.unsign(signed_user_id)
+        user = CustomUser.objects.get(id=user_id)
+
+        # Отладочный вывод: Проверка подключения к Redis
+        redis_client = Redis(host='127.0.0.1', port=6379, db=1)
+        try:
+            redis_client.ping()
+        except Exception as e:
+            return render(request, 'error.html', {'error': f'Ошибка подключения к Redis: {e}'})
+        
+        session_keys_to_delete = []
+    
+        patterns_to_try = [
+            b'*:django.contrib.sessions.*',
+            b'*:*django.contrib.sessions.*',
+            b'*:*',
+        ]
+        #получаем информацию о сессиях пользователя, pickle используется для преобразования байтов в объект
+        for pattern in patterns_to_try:
+            try:
+                for key in redis_client.scan_iter(pattern):
+                    session_data = redis_client.get(key)
+                    try:
+                        decoded_data = session_data.decode('utf-8')
+                    except UnicodeDecodeError:
+                        decoded_data = pickle.loads(session_data)
+                    if '_auth_user_id' in decoded_data and decoded_data['_auth_user_id'] == str(user.id):
+                        session_keys_to_delete.append(key.decode('utf-8'))    
+  
+            except Exception as e:
+                print(f"Ошибка при сканировании ключей сессий: {e}")
+        
+        if session_keys_to_delete:
+            redis_client.delete(*session_keys_to_delete)
+
+        logout(request)
+        return redirect('/signin')
+
+    except BadSignature:
+        return render(request, 'error.html', {'error': 'Неверная ссылка'})
+    except CustomUser.DoesNotExist:
+        return render(request, 'error.html', {'error': 'Пользователь не найден'})
+    except Exception as e:
+        print(f"Произошла непредвиденная ошибка: {e}")
+        return render(request, 'error.html', {'error': 'Произошла ошибка при выходе из системы'})
  
 
 def homepage(request):
