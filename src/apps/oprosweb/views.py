@@ -1,5 +1,3 @@
-import string
-import secrets
 from itertools import islice
 
 from smtplib import SMTPRecipientsRefused
@@ -14,6 +12,8 @@ from django.http import JsonResponse
 from .forms import SignUpForm, CustomSignInForm
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
+from django.core.signing import Signer, BadSignature
+from .utils import generate_confirmation_code, generate_secure_link
 
 
 def signup(request):
@@ -33,7 +33,7 @@ def signup(request):
                 
                 try:
                     send_mail(
-                        'test', 
+                        'Код подтверждения', 
                         'test_message',
                         settings.EMAIL_HOST_USER,
                         [request.session['email']],
@@ -80,7 +80,7 @@ def confirm_email_page(request):
 
     return render(request, 'app/password-veirfy-page.html')
 
-#TODO не работают ошибки валидации
+
 def signin(request):
     if request.user.is_authenticated:
         return redirect('/homepage')
@@ -97,6 +97,20 @@ def signin(request):
                     request.session.modified = True
                 if user is not None:
                     login(request, user)
+                    try:
+                        send_mail(
+                            'Вход в аккаунт', 
+                            f'Вы вошли в аккаунт. Если это были не вы, нажмите на ссылку: {generate_secure_link(user.id)}',
+                            settings.EMAIL_HOST_USER,
+                            [email],
+                            fail_silently=False,
+                        )
+                        return redirect('/homepage')
+
+                    except SMTPRecipientsRefused:
+                        messages.info(request, 
+                                    "Похоже, что почта, которую вы указали, не существует."\
+                                    "Пожалуйста, проверьте правильность адреса и повторите попытку.")
                     return redirect('/homepage')
                 
         else:
@@ -110,10 +124,17 @@ def logout_view(request):
     return redirect('/signin')
 
 
-def generate_confirmation_code(length=6):
-    characters = string.ascii_letters + string.digits
-    return ''.join(secrets.choice(characters) for _ in range(length))
-
+def secure_logout(request, signed_user_id):
+    signer = Signer()
+    # реализовать глобальное закрытие сессии для user
+    # try:
+    #     user_id = signer.unsign(signed_user_id)
+    #     user = CustomUser.objects.get(id=user_id)
+    #     logout(request)
+    #     return redirect('/signin')
+    # except BadSignature:
+    #     return render(request, 'error.html', {'error': 'Неверная ссылка'})
+ 
 
 def homepage(request):
     print(request.user)
