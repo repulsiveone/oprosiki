@@ -12,7 +12,7 @@ class CustomUser(AbstractUser):
     email = models.EmailField(max_length=60, unique=True)
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = []
+    REQUIRED_FIELDS = ['username']
 
     groups = models.ManyToManyField(
         'auth.Group',
@@ -49,6 +49,9 @@ class SurveyQA(models.Model):
     survey = models.ForeignKey(Survey, on_delete=models.CASCADE, related_name='surveyQA')
 
 
-# class UserSurvey(models.Model):
-#     id = models.AutoField(primary_key=True)
+class UserVotedSurveys(models.Model):
+    id = models.AutoField(primary_key=True)
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='votedsurvey')
+    survey_answer = models.ForeignKey(SurveyQA, on_delete=models.CASCADE, related_name='votedanswer')
+    
 

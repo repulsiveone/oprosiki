@@ -5,7 +5,7 @@ from django.conf import settings
 from django.contrib.auth import login, logout
 from django.contrib.auth.hashers import check_password
 from django.shortcuts import render, redirect
-from .models import CustomUser, Survey, SurveyQA
+from .models import CustomUser, Survey, SurveyQA, UserVotedSurveys
 from django.db.models import F
 from django.contrib import messages
 from django.http import JsonResponse
@@ -246,10 +246,13 @@ def survey(request, id):
             for dataVal in list(form_data):
                 if 'question' in dataVal:
                     question_id = dataVal.split(':')[1]
+                    answer = SurveyQA.objects.get(id=question_id)
                     #обновление сколько раз выбран данный ответ
                     SurveyQA.objects.filter(id=question_id).update(answer_counter=F('answer_counter')+1)
                     # обновление сколько людей проголосовало в опросе
                     Survey.objects.filter(id=id).update(votes=F('votes')+1)
+                    # добавление связи пользователя и ответа
+                    UserVotedSurveys.objects.create(user=request.user, survey_answer=answer)
         else:
             return redirect('/signin')
 

@@ -1,12 +1,13 @@
 import pytest
 from django.test import RequestFactory, Client
-from apps.oprosweb.models import CustomUser, Survey, SurveyQA
+from apps.oprosweb.models import CustomUser, Survey, SurveyQA, UserVotedSurveys
 
 @pytest.fixture
 def user():
     return CustomUser.objects.create_user(
         username='xpfxz',
-        email='xpfxz@bk.ru'
+        email='xpfxz@bk.ru',
+        password='qweqweqwe',
     )
 
 @pytest.fixture
@@ -22,6 +23,13 @@ def survey_qa(survey):
     return SurveyQA.objects.create(
         survey=survey,
         question='test_question'
+    )
+
+@pytest.fixture
+def user_voted(user, survey_qa):
+    return UserVotedSurveys.objects.create(
+        user = user,
+        survey_answer = survey_qa
     )
 
 @pytest.fixture
