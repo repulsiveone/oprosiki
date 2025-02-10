@@ -1,0 +1,90 @@
+main {
+    display: flex;
+    justify-content: center;
+}
+
+.container {
+    margin-top: 30px;
+    width: 1600px;
+    height: auto;
+    display: flex;
+}
+
+.profile {
+    margin-top: 50px;
+    margin-left: 100px;
+    width: 300px;
+    height: 500px;
+    vertical-align: middle;
+    text-align: center;
+}
+
+.info-block {
+    margin-left: 100px;    
+}
+
+.article {
+    margin-top: 20px;
+    margin-left: 330px;
+    font-family: 'Montserrat';
+    font-size: 30px;
+    font-weight: bold;
+    color: #302f2f;
+}
+
+.profile-settings {
+    width: 1000px;
+    height: 400px;
+    background-color: #9370DB;
+}
+
+#text-input {
+    margin-top: 40px;
+    margin-left: 40px;
+    width: 300px;
+    height: 30px;
+    border: none;
+    border-bottom: 2px solid  #FFF0F5;
+    background-color: #9370DB;
+    outline: none;
+    color: black;
+    font-size: 20px;
+}
+
+#text-input::placeholder {
+    color: black;
+    font-size: 20px;
+}
+
+#submit-input {
+    width: 150px;
+    height: 35px;
+    border-radius: 35px;
+    border: none;
+    background: #483D8B;
+    cursor: pointer;
+    font-family: 'Montserrat';
+    font-size: 20px;
+    color: #FFF0F5;
+}
+
+#change-password-button {
+    margin-left: 40px;
+    margin-top: 40px;
+    width: 200px;
+    height: 35px;
+    border-radius: 35px;
+    border: none;
+    background: #483D8B;
+    cursor: pointer;
+    font-family: 'Montserrat';
+    font-size: 20px;
+    color: #FFF0F5;
+}
+
+.user-surveys {
+    width: 1000px;
+    height: 400px;
+    background-image: url('/static/заглушка2.png');
+    background-size: cover;
+}

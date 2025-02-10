@@ -198,6 +198,11 @@ def userpage(request):
     if request.method == "POST":
         if request.POST.get('change-password-button'):
             return redirect(f'/userpage/change_password/{user_id}')
+        if request.POST.get('username-change'):
+            new_username = request.POST.get('text-input')
+            user_info.username = new_username
+            user_info.save()
+            return redirect('/userpage')
     return render(request, 'app/userpage.html', {'user_info': user_info, 'user_surveys': user_surveys})
 
 

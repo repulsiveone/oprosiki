@@ -1,0 +1,39 @@
+{% extends './base.html' %}
+
+{% block content %}
+<form method="POST">{% csrf_token %}
+<main>
+    <div class="container">
+        <div class="profile">
+            <img src="/static/user-icon.png" style="width: 200px; height: 200px;">
+            {{ user_info.email }}<br>
+            {{ user_info.username }}
+        </div>
+        <div class="info-block">
+            <div class="profile-settings">
+                <input type="text" name="text-input" id="text-input" placeholder="Текущий никнейм: {{ user_info.username }}">
+                <input type="submit" name="username-change" value="Сохранить" id="submit-input"><br>
+                <input type="submit" name="change-password-button" value="Изменить пароль" id="change-password-button">
+            </div>
+            <div class="article">Опросы созданные вами</div>
+            <div class="user-surveys">
+
+            </div>
+        </div>
+    </div>
+    
+    {% for survey in user_surveys %}
+        {{survey.theme}}
+        {{survey.theme_description}}<br>
+    {% endfor %}
+</main>
+</form>
+{% endblock %}
+
+{% block stylesheets %}
+<link rel="stylesheet" href="/static/css/userpage.css">
+{% endblock %}
+
+{% block scripts %}
+
+{% endblock %}

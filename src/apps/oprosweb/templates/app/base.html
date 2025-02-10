@@ -8,7 +8,7 @@
     <header>
         <a href="/homepage" id="logo">Oprosiki</a>
         {% if user.is_authenticated %}
-            <button type="button" id="user-icon"></button>
+            <a type="button" href="/userpage" id="user-icon"></a>
         {% else %}
         <div class="auth-knopki">
             <a href="/signin" id="signin">Sign in</a>
