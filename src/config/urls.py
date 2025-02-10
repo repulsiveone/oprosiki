@@ -11,7 +11,7 @@ urlpatterns = [
 
     #user
     path('userpage/', include('apps.oprosweb.urls')),
-    path('userpage/change_password/<int:id>/', include('apps.oprosweb.urls')),
+    path('userpage/change_password/<int:user_id>/', include('apps.oprosweb.urls')),
 
     #auth
     path('signup/', include('apps.oprosweb.urls')),

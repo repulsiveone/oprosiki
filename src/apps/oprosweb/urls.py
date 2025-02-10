@@ -10,7 +10,7 @@ urlpatterns = [
 
     #user
     path('userpage/', views.userpage, name='userpage'),
-    path('userpage/change_password/<int:id>/', views.change_password, name='change_password'),
+    path('userpage/change_password/<int:user_id>/', views.change_password, name='change_password'),
 
     #auth
     path('signup/', views.signup, name='signup'),

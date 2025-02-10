@@ -206,13 +206,14 @@ def change_password(request, user_id):
     user = CustomUser.objects.get(id=user_id)
     if user.id == current_user_id:
         if request.method == "POST":
-            old_password = request.GET.get('old-password-input')
-            new_password = request.GET.get('new-password-input')
+            old_password = request.POST.get('old-password-input')
+            new_password = request.POST.get('new-password-input')
             if user.check_password(old_password):
                 user.set_password(new_password)
+                user.save()
                 return redirect('/userpage')
-            return redirect(f'/userpage/change_password{current_user_id}')
-        return render(request, 'change_password.html')
+            return redirect(f'/userpage/change_password/{current_user_id}')
+        return render(request, 'app/change_password.html')
     return redirect('/userpage')
 
 
