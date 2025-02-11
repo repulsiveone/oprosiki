@@ -22,10 +22,11 @@ def test_survey_creation():
 
 
 @pytest.mark.django_db
-def test_user_voted(user, survey_qa):
+def test_user_voted(user, survey_qa, survey):
     voted = UserVotedSurveys.objects.create(
         user = user,
-        survey_answer = survey_qa
+        survey_answer = survey_qa,
+        survey = survey
     )
 
     assert voted.survey_answer == survey_qa

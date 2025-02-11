@@ -206,6 +206,7 @@ def userpage(request):
     return render(request, 'app/userpage.html', {'user_info': user_info, 'user_surveys': user_surveys})
 
 
+# TODO сделать фронтенд
 def change_password(request, user_id):
     current_user_id = request.user.id
     user = CustomUser.objects.get(id=user_id)
@@ -239,10 +240,12 @@ def surveys(request):
 def survey(request, id):
     survey = Survey.objects.get(id=id)
     questions = survey.surveyQA.all()
+    user_vote = UserVotedSurveys.objects.filter(user=request.user, survey=survey)
 
     if request.method == "POST":
-        if request.user.is_authenticated:
+        if request.user.is_authenticated and not user_vote:
             form_data = request.POST.dict()
+            print(form_data)
             for dataVal in list(form_data):
                 if 'question' in dataVal:
                     question_id = dataVal.split(':')[1]
@@ -252,7 +255,7 @@ def survey(request, id):
                     # обновление сколько людей проголосовало в опросе
                     Survey.objects.filter(id=id).update(votes=F('votes')+1)
                     # добавление связи пользователя и ответа
-                    UserVotedSurveys.objects.create(user=request.user, survey_answer=answer)
+                    UserVotedSurveys.objects.create(user=request.user, survey_answer=answer, survey=survey)
         else:
             return redirect('/signin')
 
