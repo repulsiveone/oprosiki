@@ -5,7 +5,7 @@ from django.conf import settings
 from django.contrib.auth import login, logout
 from django.contrib.auth.hashers import check_password
 from django.shortcuts import render, redirect
-from .models import CustomUser, Survey, SurveyQA, UserVotedSurveys
+from .models import CustomUser, Survey, SurveyQA, UserVotedSurveys, TagsNames, SurveyTags
 from django.db.models import F
 from django.contrib import messages
 from django.http import JsonResponse
@@ -16,6 +16,7 @@ from django.core.signing import Signer, BadSignature
 from .utils import generate_confirmation_code, generate_secure_link
 from django.contrib.sessions.backends.base import SessionBase
 from redis import Redis
+from services.redis_service import redis_client, update_user_tag
 
 
 def signup(request):
@@ -256,6 +257,13 @@ def survey(request, id):
                     Survey.objects.filter(id=id).update(votes=F('votes')+1)
                     # добавление связи пользователя и ответа
                     UserVotedSurveys.objects.create(user=request.user, survey_answer=answer, survey=survey)
+            
+            list_of_tags = []
+            survey_tags = SurveyTags.objects.filter(survey=survey)
+            for i in survey_tags:
+                list_of_tags.append(i.tag)
+            update_user_tag.delay(request.user.id, list_of_tags, redis_client)
+
         else:
             return redirect('/signin')
 
@@ -289,6 +297,15 @@ def create_survey(request):
                     theme_description=form_data.get('theme-description'),
                     user=user
                 )
+
+                for tag in form_data.get('tags_list'):
+                    
+                    if TagsNames.objects.filter(tag_name=tag):
+                        tag_name = TagsNames.objects.get(tag_name=tag)
+                    else:
+                        tag_name = TagsNames.objects.create(tag_name=form_data.get('tag_name'))
+
+                SurveyTags.objects.create(survey, tag_name)
 
                 for value in islice(form_data.values(), 3, None):
                     if value != '':
