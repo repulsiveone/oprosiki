@@ -56,7 +56,12 @@ class UserVotedSurveys(models.Model):
     survey_answer = models.ForeignKey(SurveyQA, on_delete=models.CASCADE, related_name='votedanswer')
 
 
+class TagsNames(models.Model):
+    id = models.AutoField(primary_key=True)
+    tag_name = models.CharField(max_length=40)
+
+
 class SurveyTags(models.Model):
     id = models.AutoField(primary_key=True)
     survey = models.ForeignKey(Survey, on_delete=models.CASCADE, related_name='tagssurvey')
-    tag_name = models.CharField(max_length=40)
+    tag = models.ForeignKey(TagsNames, on_delete=models.CASCADE, related_name='tagsnames')
