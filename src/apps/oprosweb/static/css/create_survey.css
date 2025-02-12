@@ -85,6 +85,32 @@ input {
     border-radius: 35px;
 }
 
+.tags {
+    margin-top: 100px;
+    margin-left: -180px;
+    margin-right: 20px;
+    width:200px;
+    height: 400px;
+    background-color: #483D8B;
+    font-family: 'Montserrat';
+    font-size: 16px;
+    color: #FFF0F5;
+}
+
+.checkField {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .checkField input[type="checkbox"] {
+    transform: scale(1.0);
+  }
+
+  .checkField p {
+    margin-bottom: 0px;
+  }
+
 .ramka-button {
     width: 740px;
     display: inline-block;

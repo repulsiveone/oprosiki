@@ -12,7 +12,7 @@
                 <div class="checbox-field">
                     {% for i in questions%}
                     <div class="checkField">
-                        <input type="checkbox" name="question:{{question.id}}" id="question">
+                        <input type="checkbox" name="question:{{i.id}}" id="question">
                         <p>{{i.question}}</p>
                     </div>
                     {% endfor %}

@@ -16,7 +16,7 @@ from django.core.signing import Signer, BadSignature
 from .utils import generate_confirmation_code, generate_secure_link
 from django.contrib.sessions.backends.base import SessionBase
 from redis import Redis
-from services.redis_service import redis_client, update_user_tag
+from config.celery import update_user_tag
 
 
 def signup(request):
@@ -242,9 +242,11 @@ def survey(request, id):
     survey = Survey.objects.get(id=id)
     questions = survey.surveyQA.all()
     user_vote = UserVotedSurveys.objects.filter(user=request.user, survey=survey)
+    survey_tags = SurveyTags.objects.filter(survey=survey)
 
     if request.method == "POST":
-        if request.user.is_authenticated and not user_vote:
+        # if request.user.is_authenticated and not user_vote:
+        if request.user.is_authenticated:
             form_data = request.POST.dict()
             print(form_data)
             for dataVal in list(form_data):
@@ -259,15 +261,14 @@ def survey(request, id):
                     UserVotedSurveys.objects.create(user=request.user, survey_answer=answer, survey=survey)
             
             list_of_tags = []
-            survey_tags = SurveyTags.objects.filter(survey=survey)
             for i in survey_tags:
-                list_of_tags.append(i.tag)
-            update_user_tag.delay(request.user.id, list_of_tags, redis_client)
+                list_of_tags.append(i.tag.tag_name)
+            update_user_tag.delay(request.user.id, list_of_tags)
 
         else:
             return redirect('/signin')
 
-    return render(request, 'app/survey.html', {'survey': survey, 'questions': questions})
+    return render(request, 'app/survey.html', {'survey': survey, 'questions': questions, 'survey_tags': survey_tags})
 
 
 def check_survey_info(request, id):
@@ -285,10 +286,10 @@ def check_survey_info(request, id):
 
 def create_survey(request):
     if request.user.is_authenticated:
+        tags = TagsNames.objects.all()
         if request.method == "POST":
             user = CustomUser.objects.get(id=1)
             form_data = request.POST.dict()
-
             if not form_data.get('theme') or not form_data.get('theme-description'):
                 messages.info(request, "*Данное поле не может быть пустым")
             else:
@@ -298,23 +299,26 @@ def create_survey(request):
                     user=user
                 )
 
-                for tag in form_data.get('tags_list'):
-                    
-                    if TagsNames.objects.filter(tag_name=tag):
-                        tag_name = TagsNames.objects.get(tag_name=tag)
-                    else:
-                        tag_name = TagsNames.objects.create(tag_name=form_data.get('tag_name'))
+                for dataVal in list(form_data):
+                    if 'tag:' in dataVal:
+                        val = dataVal.split(':')[1]
+                        if TagsNames.objects.filter(tag_name=val):
+                            tag_name = TagsNames.objects.get(tag_name=val)
+                        else:
+                            tag_name = TagsNames.objects.create(tag_name=val)
 
-                SurveyTags.objects.create(survey, tag_name)
+                        SurveyTags.objects.create(survey=survey, tag=tag_name)
 
-                for value in islice(form_data.values(), 3, None):
-                    if value != '':
+                # for value in islice(form_data.values(), 3, None):
+                for key in form_data:
+                    if 'option' in key and form_data[key] != '':
                         question = SurveyQA.objects.create(
-                            question=value,
+                            question=form_data[key],
                             survey=survey
                         )
+
                 return redirect('/homepage')
 
-        return render(request, 'app/create_survey.html')
+        return render(request, 'app/create_survey.html', {'survey_tags': tags})
     else:
         return redirect('/signin')

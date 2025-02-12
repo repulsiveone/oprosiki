@@ -8,6 +8,14 @@
     <header>
     </header>
     <main>
+        <div class="tags">
+            {% for i in survey_tags %}
+            <div class="checkField">
+                <input type="checkbox" name="tag:{{i.tag_name}}" id="question">
+                <p>{{i.tag_name}}</p>
+            </div>
+            {% endfor %}
+        </div>
         <div class="ramka-button">
             <div class="ramka">
                 <div class="container">
