@@ -18,6 +18,17 @@ main {
   align-items: center;
 }
 
+.sett {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.inline-form {
+    display: inline-block;
+    vertical-align: middle;
+}
+
 .search-field {
     margin-top: 20px;
 }
@@ -25,6 +36,22 @@ main {
 #search-input {
     width: 450px;
     height: 30px;
+}
+
+.recom-field {
+    margin-top: 20px;
+}
+
+.recom-field input {
+    width: 120px;
+    height: 36px;
+    background-color: #FFFFFF;
+    border-color: #483D8B;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 18px;
+    font-family: 'Montserrat';
+    color: #483D8B;
 }
 
 .oprosikBlock {

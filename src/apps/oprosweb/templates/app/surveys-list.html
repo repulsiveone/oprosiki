@@ -3,11 +3,18 @@
 {% block content %}
 <main>
 <div class="wrapper">
-    <form action="" method="get">
-        <div class="search-field">
-            <input type="text" name="search-input" id="search-input">
-        </div>
-    </form>
+    <div class="sett">
+        <form action="" method="get">
+            <div class="search-field">
+                <input type="text" name="search-input" id="search-input">
+            </div>
+        </form>
+        <form method="POST">{% csrf_token %}
+            <div class="recom-field">
+                <input type="submit" value="Для вас ✨">
+            </div>
+        </form>
+    </div>
     <div class="container">
         {% for i in surveys %}
         <div class="oprosikBlock">

@@ -5,6 +5,9 @@
 <main>
     <div class="ramka">
         <div class="container-survey" onclick="toggleElements1()">
+            {%for i in survey_tags%}
+                {{i.tag.tag_name}}
+            {%endfor%}
             <div class="theme"><p>{{survey.theme}}</p></div>
             <div class="theme-description"><p>{{survey.theme_description}}</p></div>
             <hr size="1" width="650px" align="center" color="#483D8B" id="line">

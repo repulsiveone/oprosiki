@@ -226,21 +226,18 @@ def change_password(request, user_id):
 
 
 def surveys(request):
-    # добавить в "для вас и вернуть поиск"
-    cached_surveys = cache.get(f'user:{request.user.id}:surveys')
-
-    if cached_surveys:
-        surveys = cached_surveys
+    search = request.GET.get('search-input')
     
-    # search = request.GET.get('search-input')
-    # print(search)
-    # if search: 
-    #     surveys = Survey.objects.filter(theme__icontains=search)
+    if search: 
+        surveys = Survey.objects.filter(theme__icontains=search)
     else:
         surveys = Survey.objects.all()
 
     if request.method == "POST":
-        pass
+        cached_surveys = cache.get(f'user:{request.user.id}:surveys')
+
+        if cached_surveys:
+            surveys = cached_surveys
 
     return render(request, 'app/surveys-list.html', {'surveys': surveys})
 
@@ -252,8 +249,7 @@ def survey(request, id):
     survey_tags = SurveyTags.objects.filter(survey=survey)
     get_user_tag(request.user.id)
     if request.method == "POST":
-        # if request.user.is_authenticated and not user_vote:
-        if request.user.is_authenticated:
+        if request.user.is_authenticated and not user_vote:
             form_data = request.POST.dict()
             print(form_data)
             for dataVal in list(form_data):
