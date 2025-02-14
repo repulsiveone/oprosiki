@@ -16,7 +16,8 @@ from django.core.signing import Signer, BadSignature
 from .utils import generate_confirmation_code, generate_secure_link
 from django.contrib.sessions.backends.base import SessionBase
 from redis import Redis
-from config.celery import update_user_tag
+from config.celery import update_user_tag, get_user_tag
+from django.core.cache import cache
 
 
 def signup(request):
@@ -225,10 +226,16 @@ def change_password(request, user_id):
 
 
 def surveys(request):
-    search = request.GET.get('search-input')
-    print(search)
-    if search: 
-        surveys = Survey.objects.filter(theme__icontains=search)
+    # добавить в "для вас и вернуть поиск"
+    cached_surveys = cache.get(f'user:{request.user.id}:surveys')
+
+    if cached_surveys:
+        surveys = cached_surveys
+    
+    # search = request.GET.get('search-input')
+    # print(search)
+    # if search: 
+    #     surveys = Survey.objects.filter(theme__icontains=search)
     else:
         surveys = Survey.objects.all()
 
@@ -243,7 +250,7 @@ def survey(request, id):
     questions = survey.surveyQA.all()
     user_vote = UserVotedSurveys.objects.filter(user=request.user, survey=survey)
     survey_tags = SurveyTags.objects.filter(survey=survey)
-
+    get_user_tag(request.user.id)
     if request.method == "POST":
         # if request.user.is_authenticated and not user_vote:
         if request.user.is_authenticated:
@@ -264,6 +271,7 @@ def survey(request, id):
             for i in survey_tags:
                 list_of_tags.append(i.tag.tag_name)
             update_user_tag.delay(request.user.id, list_of_tags)
+            get_user_tag.delay(request.user.id)
 
         else:
             return redirect('/signin')
