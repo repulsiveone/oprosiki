@@ -3,7 +3,9 @@ A platform for creating surveys and also analyze the results – in real time.
 
 ## What is Oprosiki?
 А platform for creating your own surveys on any topic.
+
 The ability to participate in user surveys and view the results in real time.
+
 Selection of surveys specifically for you, based on your actions.
 
 
