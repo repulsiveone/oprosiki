@@ -1,12 +1,8 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <link rel="stylesheet" href="/static/css/create_survey.css">
-</head>
+{% extends './base.html' %}
+
+{% block content %}
 <body>
 <form method="post">{% csrf_token %}
-    <header>
-    </header>
     <main>
         <div class="tags">
             {% for i in survey_tags %}
@@ -45,24 +41,29 @@
             <button type="submit" id="send-butt" name="send-butt"></button>
         </div>
     </main>
-    <script>
-        let counter = 4;
-        const addBtn = document.getElementById('add-butt');
-        const container = document.getElementById('answer');
-
-        addBtn.addEventListener('click', () => {
-        if (counter <= 17) {
-            const newOpt = document.createElement('input');
-            newOpt.className = 'input-field option';
-            newOpt.placeholder = "Вариант ответа";
-            newOpt.type = "text";
-            newOpt.name = `option${counter}`;
-
-            container.appendChild(newOpt);
-            counter = counter + 1;
-        }
-        });
-    </script>
 </form>
 </body>
-</html>
+{% endblock %}
+{% block stylesheets %}
+<link rel="stylesheet" href="/static/css/create_survey.css">
+{% endblock %}
+{% block scripts %}
+<script>
+    let counter = 4;
+    const addBtn = document.getElementById('add-butt');
+    const container = document.getElementById('answer');
+
+    addBtn.addEventListener('click', () => {
+    if (counter <= 17) {
+        const newOpt = document.createElement('input');
+        newOpt.className = 'input-field option';
+        newOpt.placeholder = "Вариант ответа";
+        newOpt.type = "text";
+        newOpt.name = `option${counter}`;
+
+        container.appendChild(newOpt);
+        counter = counter + 1;
+    }
+    });
+</script>
+{% endblock %}
